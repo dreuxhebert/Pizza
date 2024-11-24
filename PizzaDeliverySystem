@@ -1,0 +1,346 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class PizzaDeliverySystem {
+
+    // Main method to start the program
+    public static void main(String[] args) {
+        openLoginWindow();
+    }
+
+    // Method to open the login window
+    public static void openLoginWindow() {
+        // Create login window
+        JFrame loginFrame = new JFrame("Pizza Delivery System - Login");
+        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        loginFrame.setSize(900, 800);
+        loginFrame.setLayout(new GridBagLayout());  // Use GridBagLayout for better layout control
+        loginFrame.getContentPane().setBackground(Color.decode("#FFDDC1"));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+
+        JLabel imgLabelLogin = new JLabel(new ImageIcon("src/Logo/Logo.webp"));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        loginFrame.add(imgLabelLogin, gbc);
+
+        // Add labels and text fields for username and password
+        JLabel userLabel = new JLabel("Username: ");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        loginFrame.add(userLabel, gbc);
+
+        JTextField userTextField = new JTextField();
+        gbc.gridx = 1;
+        loginFrame.add(userTextField, gbc);
+
+        JLabel passLabel = new JLabel("Password: ");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        loginFrame.add(passLabel, gbc);
+
+        JPasswordField passField = new JPasswordField();
+        gbc.gridx = 1;
+        loginFrame.add(passField, gbc);
+
+        // Load the pizza image from the src/pizza folder and scale it
+        ImageIcon pizzaIcon = new ImageIcon("src/pizza/Pizza.png");
+        Image scaledPizzaImage = pizzaIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // Scale to 100x100
+        pizzaIcon = new ImageIcon(scaledPizzaImage);
+
+        // Add pizza button for login
+        JButton loginButton = new JButton(pizzaIcon);
+        loginButton.setPreferredSize(new Dimension(150, 150));  // Set button size to fit image
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        loginFrame.add(loginButton, gbc);
+
+
+        JLabel loginLabel = new JLabel("Login", SwingConstants.CENTER);
+        gbc.gridy = 4;
+        loginFrame.add(loginLabel, gbc);
+
+
+        JButton registerButton = new JButton(pizzaIcon);
+        registerButton.setPreferredSize(new Dimension(150, 150));  // Set button size to fit image
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        loginFrame.add(registerButton, gbc);
+
+
+        JLabel registerLabel = new JLabel("Register", SwingConstants.CENTER);
+        gbc.gridy = 4;
+        loginFrame.add(registerLabel, gbc);
+
+
+
+        loginFrame.setVisible(true);
+
+
+        loginButton.addActionListener(e -> {
+
+            loginFrame.dispose();
+            openPizzaOrderWindow();
+        });
+
+        // Action listener for the register button
+        registerButton.addActionListener(e -> {
+
+            loginFrame.dispose();
+            openRegisterWindow();
+        });
+    }
+
+    public static void openPizzaOrderWindow() {
+        // Create the pizza order window
+        JFrame orderFrame = new JFrame("Pizza Delivery System - Order Pizza");
+        orderFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        orderFrame.setSize(600, 700);
+        orderFrame.setLayout(new GridBagLayout());
+        orderFrame.getContentPane().setBackground(Color.decode("#FFDDC1"));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+
+        ImageIcon pizzaImage = new ImageIcon("src/pizza/pizza.png");
+        JLabel imgLabelOrder = new JLabel(pizzaImage);
+        imgLabelOrder.setPreferredSize(new Dimension(300, 150));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        orderFrame.add(imgLabelOrder, gbc);
+
+        // Prices for pizza size, crust, toppings, and drinks
+        double[] sizePrices = {8.99, 10.99, 12.99};  // Small, Medium, Large
+        double[] crustPrices = {0.0, 1.50, 2.00};    // Thin Crust, Thick Crust, Cheese Crust
+        double toppingPrice = 1.25;                  // Each topping costs $1.25
+        double[] drinkPrices = {1.50, 1.50, 1.00, 1.50};  // Coke, Pepsi, Water, Sprite
+
+        // Add dropdowns for pizza size
+        JLabel sizeLabel = new JLabel("Pizza Size: ");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        orderFrame.add(sizeLabel, gbc);
+
+        String[] sizes = {"Small", "Medium", "Large"};
+        JComboBox<String> sizeComboBox = new JComboBox<>(sizes);
+        gbc.gridx = 1;
+        orderFrame.add(sizeComboBox, gbc);
+
+        // Add dropdowns for pizza crust
+        JLabel crustLabel = new JLabel("Pizza Crust: ");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        orderFrame.add(crustLabel, gbc);
+
+        String[] crusts = {"Thin Crust", "Thick Crust", "Cheese Crust"};
+        JComboBox<String> crustComboBox = new JComboBox<>(crusts);
+        gbc.gridx = 1;
+        orderFrame.add(crustComboBox, gbc);
+
+        // Add checkboxes for pizza toppings
+        JLabel toppingsLabel = new JLabel("Toppings: ");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        orderFrame.add(toppingsLabel, gbc);
+
+        JCheckBox[] toppings = {
+                new JCheckBox("Pepperoni"),
+                new JCheckBox("Mushrooms"),
+                new JCheckBox("Onions"),
+                new JCheckBox("Sausage"),
+                new JCheckBox("Bacon"),
+                new JCheckBox("Extra Cheese"),
+                new JCheckBox("Peppers")
+        };
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        JPanel toppingsPanel = new JPanel(new GridLayout(3, 3));
+        toppingsPanel.setBackground(Color.decode("#FFDDC1"));
+        for (JCheckBox topping : toppings) {
+            toppingsPanel.add(topping);
+        }
+        orderFrame.add(toppingsPanel, gbc);
+
+        // Add dropdown for drinks
+        JLabel drinksLabel = new JLabel("Drinks: ");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        orderFrame.add(drinksLabel, gbc);
+
+        String[] drinks = {"Coke", "Pepsi", "Water", "Sprite"};
+        JComboBox<String> drinksComboBox = new JComboBox<>(drinks);
+        gbc.gridx = 1;
+        orderFrame.add(drinksComboBox, gbc);
+
+        // Add a label to show the total price dynamically
+        JLabel totalLabel = new JLabel("Total: $0.00");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        orderFrame.add(totalLabel, gbc);
+
+        // Add a button to place the order
+        JButton orderButton = new JButton("Place Order");
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        orderFrame.add(orderButton, gbc);
+
+        // Show the order window
+        orderFrame.setVisible(true);
+
+        // Method to calculate and update the total price
+        ActionListener priceUpdateListener = e -> updateTotalPrice(sizeComboBox, crustComboBox, toppings, drinksComboBox, totalLabel);
+
+        // Attach the listener to all the components
+        sizeComboBox.addActionListener(priceUpdateListener);
+        crustComboBox.addActionListener(priceUpdateListener);
+        for (JCheckBox topping : toppings) {
+            topping.addActionListener(priceUpdateListener);
+        }
+        drinksComboBox.addActionListener(priceUpdateListener);
+
+        // Button to place the order
+        orderButton.addActionListener(e -> {
+            String totalText = totalLabel.getText().replace("Total: $", "");
+            double totalPrice = Double.parseDouble(totalText);
+
+            // Show a confirmation message with the total price
+            JOptionPane.showMessageDialog(orderFrame, "Your pizza order has been placed!\nTotal Price: $" + String.format("%.2f", totalPrice));
+        });
+    }
+
+    // Method to calculate and update the total price
+    public static void updateTotalPrice(JComboBox<String> sizeComboBox, JComboBox<String> crustComboBox, JCheckBox[] toppings, JComboBox<String> drinksComboBox, JLabel totalLabel) {
+        // Prices for pizza size, crust, toppings, and drinks
+        double[] sizePrices = {8.99, 10.99, 12.99};  // Small, Medium, Large
+        double[] crustPrices = {0.0, 1.50, 2.00};    // Thin Crust, Thick Crust, Cheese Crust
+        double toppingPrice = 1.25;                  // Each topping costs $1.25
+        double[] drinkPrices = {1.50, 1.50, 1.00, 1.50};  // Coke, Pepsi, Water, Sprite
+
+        double totalPrice = 0.0;
+
+        // Add the price for selected pizza size
+        totalPrice += sizePrices[sizeComboBox.getSelectedIndex()];
+
+        // Add the price for selected crust
+        totalPrice += crustPrices[crustComboBox.getSelectedIndex()];
+
+        // Add the price for selected toppings
+        for (JCheckBox topping : toppings) {
+            if (topping.isSelected()) {
+                totalPrice += toppingPrice;
+            }
+        }
+
+        // Add the price for the selected drink
+        totalPrice += drinkPrices[drinksComboBox.getSelectedIndex()];
+
+        // Update the total label
+        totalLabel.setText("Total: $" + String.format("%.2f", totalPrice));
+    }
+
+
+
+
+    // Method to open the register window
+    public static void openRegisterWindow() {
+        // Create the register window
+        JFrame registerFrame = new JFrame("Pizza Delivery System - Register");
+        registerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        registerFrame.setSize(600, 550);
+        registerFrame.setLayout(new GridBagLayout());
+        registerFrame.getContentPane().setBackground(Color.decode("#FFDDC1"));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        // Add the pizza image at the top
+        ImageIcon pizzaIcon = new ImageIcon("src/pizza/pizza.png");  // Load the pizza image
+        Image scaledPizzaImage = pizzaIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);  // Scale image
+        pizzaIcon = new ImageIcon(scaledPizzaImage);  // Create a new ImageIcon with the scaled image
+
+        JLabel imgLabelRegister = new JLabel(pizzaIcon);  // Add image to a label
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;  // Center the image
+        registerFrame.add(imgLabelRegister, gbc);
+
+        // Add fields for registration
+        JLabel firstNameLabel = new JLabel("First Name: ");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        registerFrame.add(firstNameLabel, gbc);
+
+        JTextField firstNameField = new JTextField();
+        firstNameField.setPreferredSize(new Dimension(200, 30));  // Set preferred size for the text field
+        gbc.gridx = 1;
+        registerFrame.add(firstNameField, gbc);
+
+        JLabel lastNameLabel = new JLabel("Last Name: ");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        registerFrame.add(lastNameLabel, gbc);
+
+        JTextField lastNameField = new JTextField();
+        lastNameField.setPreferredSize(new Dimension(200, 30));  // Set preferred size for the text field
+        gbc.gridx = 1;
+        registerFrame.add(lastNameField, gbc);
+
+        JLabel emailLabel = new JLabel("Email: ");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        registerFrame.add(emailLabel, gbc);
+
+        JTextField emailField = new JTextField();
+        emailField.setPreferredSize(new Dimension(200, 30));  // Set preferred size for the text field
+        gbc.gridx = 1;
+        registerFrame.add(emailField, gbc);
+
+        JLabel passwordLabel = new JLabel("Password: ");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        registerFrame.add(passwordLabel, gbc);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setPreferredSize(new Dimension(200, 30));  // Set preferred size for the text field
+        gbc.gridx = 1;
+        registerFrame.add(passwordField, gbc);
+
+        // Add a button for registration
+        JButton registerButton = new JButton("Register");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        registerFrame.add(registerButton, gbc);
+
+        // Show the register window
+        registerFrame.setVisible(true);
+
+        // Action listener for the register button
+        registerButton.addActionListener(e -> {
+            // Show success message
+            JOptionPane.showMessageDialog(registerFrame, "Registration successful!");
+            registerFrame.dispose();  // Close the registration window
+            openLoginWindow();  // Reopen the login window
+        });
+
+    }
+
+
+}
